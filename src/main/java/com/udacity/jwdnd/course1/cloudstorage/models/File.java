@@ -5,6 +5,7 @@ public class File {
     private String name;
     private String url;
     private byte[] filedata;
+    private Integer userId;
 
     public Integer getId() {
         return id;

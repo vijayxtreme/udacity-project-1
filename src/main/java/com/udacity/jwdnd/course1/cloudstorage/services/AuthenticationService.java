@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 
-//put any authentication stuff here for reuse
 @Service
 public class AuthenticationService implements AuthenticationProvider {
     private UserMapper userMapper;
@@ -23,11 +22,17 @@ public class AuthenticationService implements AuthenticationProvider {
         this.hashService = hashService;
     }
 
+    //Implement the authenticate method from AuthenticationProvider
+    //compare the login info received from Authentication object to data from userMapper
+    //if user is in db, get their salt, then hash the received login password and compare to db
+    //if user hashed mpassword is correct, then return token for user to proceed to auth'd pages
+    //else return null -- not authorized
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
         String username = authentication.getName();
         String password = authentication.getCredentials().toString();
 
+        //does this actually happen
         System.out.println(username);
         User user = userMapper.getUser(username);
         if (user != null) {
@@ -41,6 +46,7 @@ public class AuthenticationService implements AuthenticationProvider {
         return null;
     }
 
+    //need this for AuthenticationProvider
     @Override
     public boolean supports(Class<?> authentication){
         return authentication.equals(UsernamePasswordAuthenticationToken.class);

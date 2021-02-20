@@ -19,12 +19,14 @@ public class SignupController {
         this.userService = userService;
     }
 
+    //default template for /signup, load with User form data
     @GetMapping()
     public String getSignup(User user, Model model){
         return "signup";
     }
 
-    //get the Signup form POJO, save it w/the service into the repo
+    //on post, check for errors from User submitted, if no errors then save.
+    //if errors with save, return the error instead.
     @PostMapping()
     public String postSignup(User user, Model model){
         String error = "";

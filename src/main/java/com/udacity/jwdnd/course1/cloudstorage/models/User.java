@@ -1,5 +1,6 @@
 package com.udacity.jwdnd.course1.cloudstorage.models;
 
+//a User POJO. Salt and password are encrypted
 public class User {
     int userid;
     String username;

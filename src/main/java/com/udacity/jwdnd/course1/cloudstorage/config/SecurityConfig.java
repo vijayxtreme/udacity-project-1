@@ -18,23 +18,30 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         this.authenticationSerivce = authenticationService;
     }
 
-//    //Custom authentication provider to check saved credentials in the db
+    //Wire our auth service into Spring to be utilized in its web security
     @Override
     protected void configure(AuthenticationManagerBuilder auth){
         auth.authenticationProvider(this.authenticationSerivce);
     }
 
-    //Our protected routes, need error handling
+    //Our protected routes - decide here what's permitted and what needs authentication
+    //Configure our login page with Spring, on success go to /home route
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .antMatchers("/signup", "/css/**", "/js/**").permitAll()
+                .antMatchers("/signup", "/css/**", "/js/**", "/home").permitAll()
+                .antMatchers("/h2/**").permitAll()
                 .anyRequest().authenticated();
+
+        http.csrf().disable();
+        http.headers().frameOptions().disable();
 
         http.formLogin().loginPage("/login").permitAll();
 
         http.formLogin()
                 .defaultSuccessUrl("/home", true);
+
+        http.logout().permitAll();
     }
 
 }

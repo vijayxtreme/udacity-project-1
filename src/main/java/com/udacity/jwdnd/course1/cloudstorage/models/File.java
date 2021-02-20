@@ -1,5 +1,6 @@
 package com.udacity.jwdnd.course1.cloudstorage.models;
 
+//a file POJO
 public class File {
     private Integer id;
     private String name;

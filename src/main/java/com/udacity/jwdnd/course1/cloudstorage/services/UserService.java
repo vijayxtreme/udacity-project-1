@@ -8,7 +8,7 @@ import java.security.SecureRandom;
 import java.util.Base64;
 import java.util.List;
 
-//put business logic here, rather than in the mapper/model area (since services can be shared)
+//userService for getting and setting users (business logic)
 @Service
 public class UserService {
     private final UserMapper userMapper;
@@ -35,7 +35,7 @@ public class UserService {
         return userMapper.getUser(username);
     }
 
-    //create a user
+    //create a user - but first generate a salt, set it on received user and create/set hashedPassword
     public int createUser(User user){
         SecureRandom random = new SecureRandom();
         byte[] salt = new byte[16];

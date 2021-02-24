@@ -2,12 +2,12 @@ package com.udacity.jwdnd.course1.cloudstorage.controllers;
 
 import com.udacity.jwdnd.course1.cloudstorage.models.Note;
 import com.udacity.jwdnd.course1.cloudstorage.services.NoteService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
-@RequestMapping
 public class NoteController {
     private NoteService noteService;
 
@@ -15,17 +15,29 @@ public class NoteController {
         this.noteService = noteService;
     }
 
-    @PostMapping("/note/new")
-    public String postNote(Note note){
-        this.noteService.createNote(note);
-        //if err, show err otherwise show success
-        return "result";
+    @RequestMapping(value = "/addNote", method = RequestMethod.POST)
+    public ResponseEntity postNote(Note note){
+        //if this note get note, then save otherwise create the note
+        System.out.println("****----POST----****");
+        System.out.println(note);
+        System.out.println("****----POST----****");
+
+        if(noteService.getNoteById(note) != null) {
+            noteService.updateNote(note);
+        }else {
+          noteService.createNote(note);
+        }
+        return new ResponseEntity(HttpStatus.OK);
     }
 
-
-    // Edit
-    //note/id
-
     // Delete
-    //note/id-
+    @GetMapping("/deleteNote")
+    public void deleteNote(Note note){
+        if(noteService.getNoteById(note)!=null){
+            this.noteService.deleteNote(note);
+        }else {
+            System.out.println("Error trying to delete");
+        }
+
+    }
 }

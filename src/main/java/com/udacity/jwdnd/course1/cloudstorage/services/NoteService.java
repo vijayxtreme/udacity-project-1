@@ -39,8 +39,8 @@ public class NoteService {
     }
 
     //get Note by id
-    public Note getNoteById(User user){
-        Integer id = user.getUserid();
+    public Note getNoteById(Note note){
+        Integer id = note.getNoteid();
         return noteMapper.getNoteById(String.valueOf(id));
     }
 

@@ -38,4 +38,8 @@ public class Note {
     public void setUserid(Integer userid) {
         this.userid = userid;
     }
+
+//    @Override String toString(){
+//        return "Note: id: " + noteid.toString() + "title: " + notetitle.toString() + " created.";
+//    }
 }

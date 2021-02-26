@@ -17,27 +17,29 @@ public class NoteController {
 
     @RequestMapping(value = "/addNote", method = RequestMethod.POST)
     public ResponseEntity postNote(Note note){
-        //if this note get note, then save otherwise create the note
-        System.out.println("****----POST----****");
-        System.out.println(note);
-        System.out.println("****----POST----****");
+//        System.out.println("**______NOTE____***");
+//        System.out.println(note);
+//        System.out.println("**______NOTE____***");
 
-        if(noteService.getNoteById(note) != null) {
+        if(note.getNoteid() != null) {
             noteService.updateNote(note);
         }else {
           noteService.createNote(note);
         }
+        //condition for error
         return new ResponseEntity(HttpStatus.OK);
     }
 
-    // Delete
-    @GetMapping("/deleteNote")
-    public void deleteNote(Note note){
-        if(noteService.getNoteById(note)!=null){
-            this.noteService.deleteNote(note);
+    // Delete -- should check user logged in
+    // otherwise anyone can just delete via the url
+    @GetMapping("/deleteNote/{id}")
+    public String deleteNote(@PathVariable String id){
+        Note note = noteService.getNoteById(id);
+        if(note != null){
+            noteService.deleteNote(note);
         }else {
-            System.out.println("Error trying to delete");
+            System.out.println("Note does not exist");
         }
-
+        return "result";
     }
 }

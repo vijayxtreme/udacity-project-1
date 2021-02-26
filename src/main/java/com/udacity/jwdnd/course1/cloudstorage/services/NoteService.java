@@ -35,13 +35,11 @@ public class NoteService {
     public List<Note> getAllNotesBelongToUser(User user){
         Integer id = user.getUserid();
         return noteMapper.getNotesByUserId(String.valueOf(id));
-
     }
 
     //get Note by id
-    public Note getNoteById(Note note){
-        Integer id = note.getNoteid();
-        return noteMapper.getNoteById(String.valueOf(id));
+    public Note getNoteById(String id){
+        return noteMapper.getNoteById(id);
     }
 
     public int createNote(Note note){

@@ -39,4 +39,11 @@ public class File {
     public void setFiledata(byte[] filedata) {
         this.filedata = filedata;
     }
+
+    public Integer getUserId() {
+        return userId;
+    }
+    public void setUserId(Integer userId) {
+        this.userId = userId;
+    }
 }

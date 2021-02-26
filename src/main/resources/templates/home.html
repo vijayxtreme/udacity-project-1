@@ -25,7 +25,7 @@
                 </nav>
                 <div class="tab-content" id="nav-tabContent">
                     <div class="tab-pane fade show active" id="nav-files" role="tabpanel" aria-labelledby="nav-files-tab">
-                        <form action="#" enctype="multipart/form-data" method="POST">
+                        <form action="#" th:action="@{/file-upload}" th:object="${file}" enctype="multipart/form-data" method="POST">
                             <div class="container">
                                 <div class="row" style="margin: 1em;">
                                     <div class="col-sm-2">
@@ -39,6 +39,7 @@
                                     </div>
                                 </div>
                             </div>
+                            <input type="hidden" name="userid" th:field="*{userid}" />
                         </form>
                         <div class="table-responsive">
                             <table class="table table-striped" id="fileTable">
@@ -99,24 +100,23 @@
                                         </button>
                                     </div>
                                     <div class="modal-body">
-                                        <form id="note-submit" action="#" th:object="${note}" method="POST" onsubmit="return false;">
+                                        <form id="note-submit" th:action="@{/addNote}" th:object="${note}" method="POST">
                                             <input type="hidden" name="noteId" id="note-id">
                                             <div class="form-group">
                                                 <label for="note-title" class="col-form-label">Title</label>
-                                                <input type="text" name="noteTitle" class="form-control" id="note-title" maxlength="20" required>
+                                                <input type="text" th:field="*{notetitle}" name="noteTitle" class="form-control" id="note-title" maxlength="20" required>
                                             </div>
                                             <div class="form-group">
                                                 <label for="note-description" class="col-form-label">Description</label>
-                                                <textarea class="form-control" name="noteDescription" id="note-description" rows="5" maxlength="1000" required></textarea>
+                                                <textarea class="form-control" th:field="*{notedescription}" name="noteDescription" id="note-description" rows="5" maxlength="1000" required></textarea>
                                             </div>
-
-                                            <input type="hidden" id="user-id" th:field="*{userid}"  />
+                                            <input type="hidden" id="user-id" name="userid" th:field="*{userid}"  />
                                             <button id="noteSubmit" type="submit" class="d-none"></button>
                                         </form>
                                     </div>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                        <button type="button" class="btn btn-primary" th:onclick="noteSubmit()">Save changes</button>
+                                        <button type="button" class="btn btn-primary" th:onclick="$('#noteSubmit').click()">Save changes</button>
                                     </div>
                                 </div>
                             </div>
@@ -211,22 +211,6 @@
                 $('#credential-username').val(username ? username : '');
                 $('#credential-password').val(password ? password : '');
                 $('#credentialModal').modal('show');
-            }
-
-            function noteSubmit(){
-               var noteForm = new FormData();
-               noteForm.append('noteid', $('#note-id').val());
-               noteForm.append('notetitle',$('#note-title').val());
-               noteForm.append('notedescription', $('#note-description').val());
-               noteForm.append('userid', $('#user-id').val());
-               console.log(noteForm);
-               var url = '/addNote';
-               fetch(url, {method: 'POST', body:noteForm})
-               .then(res => {
-                 console.log("Saved", res);
-                 alert("Saved, please refresh to view the result, for now.  Maybe ajaxy later");
-                 jQuery('#noteModal').modal('hide');
-               });
             }
         </script>
     </body>

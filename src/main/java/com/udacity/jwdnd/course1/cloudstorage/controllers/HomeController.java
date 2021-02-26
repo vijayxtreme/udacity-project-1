@@ -1,7 +1,11 @@
 package com.udacity.jwdnd.course1.cloudstorage.controllers;
 
+import com.udacity.jwdnd.course1.cloudstorage.models.Credentials;
+import com.udacity.jwdnd.course1.cloudstorage.models.File;
 import com.udacity.jwdnd.course1.cloudstorage.models.Note;
 import com.udacity.jwdnd.course1.cloudstorage.models.User;
+import com.udacity.jwdnd.course1.cloudstorage.services.CredentialService;
+import com.udacity.jwdnd.course1.cloudstorage.services.FileService;
 import com.udacity.jwdnd.course1.cloudstorage.services.NoteService;
 import com.udacity.jwdnd.course1.cloudstorage.services.UserService;
 import org.springframework.security.core.Authentication;
@@ -18,24 +22,42 @@ import java.util.List;
 public class HomeController {
     private UserService userService;
     private NoteService noteService;
+    private FileService fileService;
+    private CredentialService credentialService;
 
-    public HomeController(UserService userService, NoteService noteService){
+    //DI
+    public HomeController(UserService userService, NoteService noteService, FileService fileService, CredentialService credentialService){
         this.userService = userService;
         this.noteService = noteService;
+        this.fileService = fileService;
+        this.credentialService = credentialService;
     }
 
     // the main home view for logged in users
     @GetMapping()
-    public String getHomePage(Authentication authentication, Note note, Model model){
+    public String getHomePage(Authentication authentication, Note note, File file, Credentials credential, Model model){
         String username = authentication.getName();
         User currentUser = this.userService.getUser(username);
+        Integer currUserId = currentUser.getUserid();
+
 
         List<Note> notes = this.noteService.getAllNotesBelongToUser(currentUser);
         model.addAttribute("notes", notes);
 
-        Integer currUserId = currentUser.getUserid();
+        List<File> files = this.fileService.getAllFilesBelongToUser(currentUser);
+        model.addAttribute("files", files);
+
+        List<Credentials> credentials = this.credentialService.getAllCredentialsBelongToUser(currentUser);
+        model.addAttribute("credentials", credentials);
+
         note.setUserid(currUserId);
+        credential.setUserid(currUserId);
+        file.setUserid(currUserId);
+
+        //for new form objects to be created
         model.addAttribute("note", note);
+        model.addAttribute("file", file);
+        model.addAttribute("credential", credential);
 
         return "home";
     }

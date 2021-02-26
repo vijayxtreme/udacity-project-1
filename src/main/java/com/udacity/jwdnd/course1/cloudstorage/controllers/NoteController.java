@@ -15,19 +15,15 @@ public class NoteController {
         this.noteService = noteService;
     }
 
-    @RequestMapping(value = "/addNote", method = RequestMethod.POST)
-    public ResponseEntity postNote(Note note){
-//        System.out.println("**______NOTE____***");
-//        System.out.println(note);
-//        System.out.println("**______NOTE____***");
-
+    @PostMapping("/addNote")
+    public String postNote(Note note){
         if(note.getNoteid() != null) {
             noteService.updateNote(note);
         }else {
           noteService.createNote(note);
         }
         //condition for error
-        return new ResponseEntity(HttpStatus.OK);
+        return "result";
     }
 
     // Delete -- should check user logged in

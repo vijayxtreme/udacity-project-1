@@ -2,19 +2,11 @@ package com.udacity.jwdnd.course1.cloudstorage.models;
 
 //a file POJO
 public class File {
-    private Integer id;
+    private Integer fileid;
     private String name;
     private String url;
     private byte[] filedata;
-    private Integer userId;
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
+    private Integer userid;
 
     public String getName() {
         return name;
@@ -40,10 +32,11 @@ public class File {
         this.filedata = filedata;
     }
 
-    public Integer getUserId() {
-        return userId;
+    public Integer getUserid() {
+        return userid;
     }
-    public void setUserId(Integer userId) {
-        this.userId = userId;
+
+    public void setUserid(Integer userid) {
+        this.userid = userid;
     }
 }

@@ -2,19 +2,19 @@ package com.udacity.jwdnd.course1.cloudstorage.models;
 
 //a Credential POJO
 public class Credentials {
-    Integer id;
+    Integer credentialid;
     String url;
     String username;
     String password;
-    String hashedpassword; //hashed
+    String key; //hashed
     Integer userid; //belongs to a user
 
-    public Integer getId() {
-        return id;
+    public Integer getCredentialid() {
+        return credentialid;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void setCredentialid(Integer credentialid) {
+        this.credentialid = credentialid;
     }
 
     public String getUrl() {
@@ -41,12 +41,12 @@ public class Credentials {
         this.password = password;
     }
 
-    public String getHashedpassword() {
-        return hashedpassword;
+    public String getKey() {
+        return key;
     }
 
-    public void setHashedpassword(String hashedpassword) {
-        this.hashedpassword = hashedpassword;
+    public void setKey(String key) {
+        this.key = key;
     }
 
     public Integer getUserid() {

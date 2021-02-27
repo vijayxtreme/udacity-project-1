@@ -36,7 +36,11 @@ public class HomeController {
     // the main home view for logged in users
     @GetMapping()
     public String getHomePage(Authentication authentication, Note note, File file, Credentials credential, Model model){
+        if(authentication == null){
+            return "login";
+        }
         String username = authentication.getName();
+
         User currentUser = this.userService.getUser(username);
         Integer currUserId = currentUser.getUserid();
         model.addAttribute("currentUser", currUserId);

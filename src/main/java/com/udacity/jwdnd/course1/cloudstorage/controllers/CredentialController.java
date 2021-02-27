@@ -2,6 +2,8 @@ package com.udacity.jwdnd.course1.cloudstorage.controllers;
 
 import com.udacity.jwdnd.course1.cloudstorage.models.Credentials;
 import com.udacity.jwdnd.course1.cloudstorage.services.CredentialService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,8 +25,19 @@ public class CredentialController {
        // System.out.println("***----CREDENTIAL----***");
         credentialService.createCredential(credential);
 
-        //save url, username and password plus hashed password (check encryption)
         return "result";
+    }
+
+    @GetMapping("/decrypt/{id}")
+    public ResponseEntity<String> decrypt(@PathVariable String id){
+        try {
+            String pass = credentialService.decrypt(id);
+            System.out.println("-------");
+            System.out.println(pass);
+            return new ResponseEntity<>(pass, HttpStatus.OK);
+        } catch(Exception e){
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
     }
 
     @GetMapping("/deleteCredential/{id}")

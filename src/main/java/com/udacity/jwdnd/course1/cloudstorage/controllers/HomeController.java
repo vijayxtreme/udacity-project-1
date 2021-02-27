@@ -39,7 +39,7 @@ public class HomeController {
         String username = authentication.getName();
         User currentUser = this.userService.getUser(username);
         Integer currUserId = currentUser.getUserid();
-
+        model.addAttribute("currentUser", currUserId);
 
         List<Note> notes = this.noteService.getAllNotesBelongToUser(currentUser);
         model.addAttribute("notes", notes);
@@ -50,13 +50,12 @@ public class HomeController {
         List<Credentials> credentials = this.credentialService.getAllCredentialsBelongToUser(currentUser);
         model.addAttribute("credentials", credentials);
 
+        //refactor (since have this above in model)
         note.setUserid(currUserId);
         credential.setUserid(currUserId);
-        file.setUserid(currUserId);
 
         //for new form objects to be created
         model.addAttribute("note", note);
-        model.addAttribute("file", file);
         model.addAttribute("credential", credential);
 
         return "home";

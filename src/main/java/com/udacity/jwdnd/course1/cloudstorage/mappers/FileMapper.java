@@ -19,15 +19,15 @@ public interface FileMapper {
     File getFileById(String fileid);
 
     //Insert
-    @Insert("INSERT INTO files (name, url, filedata, userid) VALUES (#{name}, #{url}, #{filedata}, #{userid})")
+    @Insert("INSERT INTO files (filename, contenttype, filesize, filedata, userid) VALUES (#{filename}, #{contenttype}, #{filesize}, #{filedata}, #{userid})")
     @Options(useGeneratedKeys = true, keyProperty = "fileid")
     int createFile(File file);
 
     //Update
-    @Update("UPDATE files WHERE name=#{name}, url=#{url}, filedata=#{filedata} WHERE userid=#{userid}")
+    @Update("UPDATE files WHERE filename=#{filename}, contenttype=#{contenttype}, filesize=#{filesize}, filedata=${filedata} WHERE userid=#{userid}")
     void updateFile(File file);
 
     //Delete
-    @Delete("DELETE FROM files WHERE userid= #{fileid}")
+    @Delete("DELETE FROM files WHERE fileid= #{fileid}")
     void deleteFile(String fileid);
 }

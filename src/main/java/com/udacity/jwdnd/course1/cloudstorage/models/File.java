@@ -3,25 +3,42 @@ package com.udacity.jwdnd.course1.cloudstorage.models;
 //a file POJO
 public class File {
     private Integer fileid;
-    private String name;
-    private String url;
+    private String filename;
+    private String contenttype;
+    private String filesize;
     private byte[] filedata;
     private Integer userid;
 
-    public String getName() {
-        return name;
+    public Integer getFileid() {
+        return fileid;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setFileid(Integer fileid) {
+        this.fileid = fileid;
     }
 
-    public String getUrl() {
-        return url;
+    public String getFilename() {
+        return filename;
     }
 
-    public void setUrl(String url) {
-        this.url = url;
+    public void setFilename(String filename) {
+        this.filename = filename;
+    }
+
+    public String getContenttype() {
+        return contenttype;
+    }
+
+    public void setContenttype(String contenttype) {
+        this.contenttype = contenttype;
+    }
+
+    public String getFilesize() {
+        return filesize;
+    }
+
+    public void setFilesize(String filesize) {
+        this.filesize = filesize;
     }
 
     public byte[] getFiledata() {

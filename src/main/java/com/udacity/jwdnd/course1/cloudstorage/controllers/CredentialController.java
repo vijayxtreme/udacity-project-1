@@ -5,6 +5,7 @@ import com.udacity.jwdnd.course1.cloudstorage.services.CredentialService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
@@ -19,11 +20,14 @@ public class CredentialController {
     }
 
     @PostMapping("/addCredential")
-    public String addCredential(Credentials credential){
-       // System.out.println("***----CREDENTIAL----***");
-       // System.out.println(credential);
-       // System.out.println("***----CREDENTIAL----***");
+    public String addCredential(Credentials credential, Model model){
+        String error = "";
+
+        //if some err
+        //model.addAttribute("error", "That credential already exists");
+
         credentialService.createCredential(credential);
+        model.addAttribute("success", "Successfully added credential");
 
         return "result";
     }

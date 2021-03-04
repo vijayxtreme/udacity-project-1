@@ -11,17 +11,17 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
-    private AuthenticationService authenticationSerivce;
+    private AuthenticationService authenticationService;
 
     //Inject AuthenticationService into our SecurityConfig class
     public SecurityConfig(AuthenticationService authenticationService){
-        this.authenticationSerivce = authenticationService;
+        this.authenticationService = authenticationService;
     }
 
     //Wire our auth service into Spring to be utilized in its web security
     @Override
     protected void configure(AuthenticationManagerBuilder auth){
-        auth.authenticationProvider(this.authenticationSerivce);
+        auth.authenticationProvider(this.authenticationService);
     }
 
     //Our protected routes - decide here what's permitted and what needs authentication

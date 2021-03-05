@@ -20,9 +20,6 @@ public class NoteController {
     public String postNote(Note note, Model model){
         int success = -1;
         if(note.getNoteid() != null) {
-            if(noteService.updateNote(note)){
-                
-            };
             model.addAttribute("success", "Successfully created the note");
 
         }else {

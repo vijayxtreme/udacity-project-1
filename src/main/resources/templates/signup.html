@@ -18,10 +18,10 @@
             <form th:action="@{'/signup'}" th:object="${user}" method="POST">
                 <div th:if="${success}" class="alert alert-dark">
 
-                    <p>You successfully signed up!</p>
+                    <p id="success">You successfully signed up!</p>
                 </div>
                 <div th:if="${error}" class="alert alert-danger">
-                    <span >Example Signup Error Message</span>
+                    <span id="error">Can't sign up with that username. It may already be in use.</span>
                 </div>
                 <div class="form-row">
                     <div class="form-group col-md-6">
@@ -43,7 +43,7 @@
                         <input type="password" th:field="*{password}" name="password" class="form-control" id="inputPassword" placeholder="Enter Password" maxlength="20" required>
                     </div>
                 </div>
-                <button type="submit" class="btn btn-primary">Sign Up</button>
+                <button id="submit" type="submit" class="btn btn-primary">Sign Up</button>
             </form>
         </div>
     </body>

@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import java.util.List;
 
 @Controller
-@RequestMapping("/home")
+@RequestMapping
 public class HomeController {
     private UserService userService;
     private NoteService noteService;
@@ -34,9 +34,9 @@ public class HomeController {
     }
 
     // the main home view for logged in users
-    @GetMapping()
+    @GetMapping("/")
     public String getHomePage(Authentication authentication, Note note, File file, Credentials credential, Model model){
-        if(authentication == null){
+        if(authentication.getName() == null){
             return "login";
         }
         String username = authentication.getName();

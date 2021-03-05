@@ -6,6 +6,7 @@ import org.apache.coyote.Response;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
@@ -44,20 +45,22 @@ public class FileController {
     }
 
     @PostMapping("/file-upload")
-    public String fileUpload(@RequestParam("fileUpload") MultipartFile fileUpload, File file) throws IOException {
+    public String fileUpload(@RequestParam("fileUpload") MultipartFile fileUpload, File file, Model model) throws IOException {
         file.setFilename(fileUpload.getOriginalFilename());
         file.setContenttype(fileUpload.getContentType());
         file.setFilesize(String.valueOf(fileUpload.getSize()));
         file.setFiledata(fileUpload.getBytes());
-        //userid -> file (already set)
-        System.out.println("***---FILE-UPLOAD---***");
-        System.out.println(file);
-        System.out.println("***---FILE-UPLOAD---***");
+
 
         //if not in system, save or update
-        fileService.createFile(file);
-
+        if(fileService.createFile(file) > -1){
+            model.addAttribute("success", "Successfully created file");
+        }
+        else {
+            model.addAttribute("error", "Error creating the file.");
+        }
         return "result";
+
     }
 
     @GetMapping("/deleteFile/{id}")

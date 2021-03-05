@@ -21,13 +21,12 @@ public class CredentialController {
 
     @PostMapping("/addCredential")
     public String addCredential(Credentials credential, Model model){
-        String error = "";
-
-        //if some err
-        //model.addAttribute("error", "That credential already exists");
-
-        credentialService.createCredential(credential);
-        model.addAttribute("success", "Successfully added credential");
+    //protect against upload twice same cred
+        if(credentialService.createCredential(credential) > -1) {
+            model.addAttribute("success", "Successfully added credential");
+        }else {
+            model.addAttribute("error", "Something went wrong.");
+        }
 
         return "result";
     }

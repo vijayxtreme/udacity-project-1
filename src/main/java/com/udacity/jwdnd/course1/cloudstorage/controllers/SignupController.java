@@ -20,14 +20,14 @@ public class SignupController {
     }
 
     //default template for /signup, load with User form data
-    @GetMapping()
+    @GetMapping
     public String getSignup(User user, Model model){
         return "signup";
     }
 
     //on post, check for errors from User submitted, if no errors then save.
     //if errors with save, return the error instead.
-    @PostMapping()
+    @PostMapping
     public String postSignup(User user, Model model){
         String error = "";
 
@@ -35,7 +35,7 @@ public class SignupController {
         //aka the userService says that the username is not available
         if(!userService.isUsernameAvailable(user.getUsername())){
             error = "Sorry, that username wasn't available.  Please try another name.";
-            model.addAttribute("signupError", error);
+            model.addAttribute("error", error);
             return "signup";
         }
 
@@ -43,11 +43,11 @@ public class SignupController {
         int rowsAdded = userService.createUser(user);
         if(rowsAdded < 0){
             error = "Couldn't sign you up.  Please try again later";
-            model.addAttribute("signupError", error);
+            model.addAttribute("error", error);
             return "signup";
         }
 
-        model.addAttribute("signupSuccess", "Awesome, you signed up!");
+        model.addAttribute("success", "Awesome, you signed up!");
         return "signup";
 
     }

@@ -18,13 +18,18 @@ public class NoteController {
 
     @PostMapping("/addNote")
     public String postNote(Note note, Model model){
+        int success = -1;
         if(note.getNoteid() != null) {
-            noteService.updateNote(note);
+            if(noteService.updateNote(note)){
+                
+            };
+            model.addAttribute("success", "Successfully created the note");
+
         }else {
-          noteService.createNote(note);
+            noteService.createNote(note);
         }
 
-        model.addAttribute("success", "Successfully created the note");
+
         return "result";
     }
 

@@ -35,47 +35,63 @@ public class CredentialPage {
     @FindBy(css = "#credential-close")
     private WebElement closeModal;
 
+    @FindBy(css = "#save-credential")
+    private WebElement saveCredential;
+
+    @FindBy(css = "#success-resume")
+    private WebElement successPage;
+
+
+    @FindBy(css = "#credentialModal")
+    private WebElement credentialModal;
+
+
     private WebDriver driver;
+    private static Helper helper;
+
+
 
     public CredentialPage(WebDriver driver){
         PageFactory.initElements(driver, this);
+        this.driver = driver;
     }
 
-    private void helperWait(WebElement element){
-        WebElement webEl = new WebDriverWait(this.driver, 2).until(ExpectedConditions.elementToBeClickable(element));
+    private void openCredentialTab() throws InterruptedException {
+        helper.helperWaitAndClick(this.driver, this.credentialTab);
     }
 
-    private void helperPopulateFieldsAndSave(String url, String username, String password){
+    private void returnCredentialHome() throws InterruptedException {
+        helper.helperWaitAndClick(this.driver, this.successPage);
+        this.openCredentialTab();
+    }
+
+    private void populateFieldsAndSave(String url, String username, String password) throws InterruptedException {
+        this.url.clear();
         this.url.sendKeys(url);
+        this.userName.clear();
         this.userName.sendKeys(username);
+        this.password.clear();
         this.password.sendKeys(password);
-        this.addNewCredential.click();
+        this.saveCredential.click();
+        this.returnCredentialHome();
     }
 
-    private void openCredentialTab(){
-        this.helperWait(this.credentialTab);
-        this.credentialTab.click();
-    }
-
-    public void createCredential(String url, String username, String password){
+    public void createCredential(String url, String username, String password) throws InterruptedException {
         this.openCredentialTab();
-        this.helperWait(this.addNewCredential);
-        this.addNewCredential.click();
-        this.helperPopulateFieldsAndSave(url, username, password);
-        this.closeModal.click();
+        helper.helperWaitAndClick(this.driver, this.addNewCredential);
+        helper.helperWait(this.driver, this.credentialModal);
+        this.populateFieldsAndSave(url, username, password);
     }
 
-    public void updateCredential(String url, String username, String password){
+    public void updateCredential(String url, String username, String password) throws InterruptedException {
         this.openCredentialTab();
-        this.helperWait(this.editCredential);
-        this.editCredential.click();
-        this.helperPopulateFieldsAndSave(url, username, password);
-        this.closeModal.click();
+        helper.helperWaitAndClick(this.driver, this.editCredential);
+        helper.helperWait(this.driver, this.credentialModal);
+        this.populateFieldsAndSave(url, username, password);
     }
 
-    public void deleteCredential(){
+    public void deleteCredential() throws InterruptedException {
         this.openCredentialTab();
-        this.helperWait(this.deleteCredential);
-        this.deleteCredential.click();
+        helper.helperWaitAndClick(this.driver, this.deleteCredential);
     }
 }

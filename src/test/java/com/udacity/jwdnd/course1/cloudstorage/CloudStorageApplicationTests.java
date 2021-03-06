@@ -16,6 +16,7 @@ import java.time.Duration;
 import java.util.Random;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class CloudStorageApplicationTests {
 
 	@LocalServerPort
@@ -61,6 +62,7 @@ class CloudStorageApplicationTests {
 
 	//can't visit home page unless loggedin (if not authenticated)
 	@Test
+	@Order(1)
 	public void unAuthenticatedIsRedirectedToLogin(){
 		driver.get(baseUrl);
 		Assertions.assertEquals("Login", driver.getTitle());
@@ -68,6 +70,7 @@ class CloudStorageApplicationTests {
 
 	//can signup, login, view home page, logout, Part 1
 	@Test
+	@Order(2)
 	public void canSignUpLoginViewHomeLogout() throws InterruptedException {
 		driver.get(baseUrl + "/signup");
 		Random random = new Random();
@@ -113,6 +116,7 @@ class CloudStorageApplicationTests {
 
 	//Test note creation
 	@Test
+	@Order(3)
 	public void createNote() throws InterruptedException {
 		this.canLogin();
 		String notetitle = "Hello World";
@@ -125,6 +129,7 @@ class CloudStorageApplicationTests {
 
 	//Test note update
 	@Test
+	@Order(4)
 	public void updateExistingNote() throws InterruptedException {
 		this.canLogin();
 		String notetitle = "Goodbye Everyone";
@@ -137,6 +142,7 @@ class CloudStorageApplicationTests {
 
 	//Test delete note
 	@Test
+	@Order(5)
 	public void deleteNote() throws InterruptedException {
 		this.canLogin();
 		NotePage notePage = new NotePage(driver);
@@ -146,18 +152,36 @@ class CloudStorageApplicationTests {
 	/***** CREDENTIAL CREATION, VIEWING, EDITING, DELETION *****/
 
 	@Test
-	public void createCredential(){
+	@Order(6)
+	public void createCredential() throws InterruptedException {
+		this.canLogin();
+		String url = "https://google.com";
+		String username = "Googler";
+		String password = "adsasd";
 
+		//In home page, go to Note page (tab)?
+		CredentialPage credentialPage = new CredentialPage(driver);
+		credentialPage.createCredential(url, username, password);
 	}
 
 	@Test
-	public void updateCredential(){
+	@Order(7)
+	public void updateCredential() throws InterruptedException {
+		this.canLogin();
+		String url = "https://amazon.com";
+		String username = "Amazonian";
+		String password = "waeasd";
 
+		CredentialPage credentialPage = new CredentialPage(driver);
+		credentialPage.updateCredential(url, username, password);
 	}
 
 	@Test
-	public void deleteCredential(){
-
+	@Order(8)
+	public void deleteCredential() throws InterruptedException {
+		this.canLogin();
+		CredentialPage credentialPage = new CredentialPage(driver);
+		credentialPage.deleteCredential();
 	}
 
 

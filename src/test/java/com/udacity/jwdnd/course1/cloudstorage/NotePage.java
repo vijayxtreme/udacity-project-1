@@ -41,27 +41,16 @@ public class NotePage {
     @FindBy(css = "#noteModal")
     private WebElement noteModal;
 
-    private WebDriver driver;
+    private final WebDriver driver;
+    private static Helper helper;
 
-    private void helperWait(WebElement element) throws InterruptedException {
-        Thread.sleep(1000);
-        new WebDriverWait(this.driver, 5).until(
-                ExpectedConditions.visibilityOf(element)
-        );
-    }
-
-    private void helperWaitAndClick(WebElement element) throws InterruptedException {
-       Thread.sleep(1000);
-       new WebDriverWait(this.driver, 5).until(
-                ExpectedConditions.elementToBeClickable(element)
-       ).click();
-    }
 
     private void openNoteTab() throws InterruptedException {
-            this.helperWaitAndClick(this.noteTab);
+        helper.helperWaitAndClick(this.driver, this.noteTab);
+
     }
 
-    private void helperPopulateFieldsAndSave(String notetitle, String notedescription){
+    private void populateFieldsAndSave(String notetitle, String notedescription){
         this.notetitle.clear();
         this.notetitle.sendKeys(notetitle);
         this.notedescription.clear();
@@ -70,7 +59,8 @@ public class NotePage {
     }
 
     private void returnNoteHome() throws InterruptedException {
-        this.helperWaitAndClick(this.successPage);
+        helper.helperWaitAndClick(this.driver, this.successPage);
+
         this.openNoteTab();
     }
 
@@ -81,24 +71,27 @@ public class NotePage {
 
     public void createNote(String notetitle, String notedescription) throws InterruptedException {
         this.openNoteTab();
-        this.helperWaitAndClick(this.addNote);
-        //going to addNote
-        this.helperWait(this.noteModal);
-        this.helperPopulateFieldsAndSave(notetitle, notedescription);
+        helper.helperWaitAndClick(this.driver, this.addNote);
+
+        helper.helperWait(this.driver, this.noteModal);
+
+        this.populateFieldsAndSave(notetitle, notedescription);
         this.returnNoteHome();
     }
 
     public void updateNote(String notetitle, String notedescription) throws InterruptedException {
         this.openNoteTab();
-        this.helperWaitAndClick(this.editNote);
-        this.helperWait(this.noteModal);
-        this.helperPopulateFieldsAndSave(notetitle, notedescription);
+        helper.helperWaitAndClick(this.driver, this.editNote);
+
+        helper.helperWait(this.driver, this.editNote);
+        this.populateFieldsAndSave(notetitle, notedescription);
         this.returnNoteHome();
     }
 
     public void deleteNote() throws InterruptedException {
         this.openNoteTab();
-        this.helperWaitAndClick(this.deleteNote);
+        helper.helperWaitAndClick(this.driver, this.deleteNote);
+
         this.returnNoteHome();
     }
 }

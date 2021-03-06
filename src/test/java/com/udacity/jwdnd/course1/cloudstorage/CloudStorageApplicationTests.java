@@ -23,6 +23,20 @@ class CloudStorageApplicationTests {
 
 	private WebDriver driver;
 
+	//basic login - note supermario username needs to be in sys w/pass mushroom
+
+	private void canLogin() {
+		String username = "supermario";
+		String password = "mushroom";
+
+		driver.get(baseUrl + "/login");
+
+		LoginPage loginPage = new LoginPage(driver);
+		loginPage.login(username, password);
+
+	}
+
+
 	public String baseUrl;
 
 	@BeforeAll
@@ -32,7 +46,6 @@ class CloudStorageApplicationTests {
 
 	@BeforeEach
 	public void beforeEach() {
-
 		this.driver = new ChromeDriver();
 		baseUrl = "http://localhost:" + this.port;
 	}
@@ -44,6 +57,8 @@ class CloudStorageApplicationTests {
 		}
 	}
 
+	/***** SIGNUP, LOGIN & UNAUTHORIZED RESTRICTIONS *****/
+
 	//can't visit home page unless loggedin (if not authenticated)
 	@Test
 	public void unAuthenticatedIsRedirectedToLogin(){
@@ -53,7 +68,7 @@ class CloudStorageApplicationTests {
 
 	//can signup, login, view home page, logout, Part 1
 	@Test
-	public void canSignUpLoginViewHomeLogout(){
+	public void canSignUpLoginViewHomeLogout() throws InterruptedException {
 		driver.get(baseUrl + "/signup");
 		Random random = new Random();
 		String randNum = String.valueOf(random.nextInt());
@@ -68,7 +83,7 @@ class CloudStorageApplicationTests {
 		signupPage.signup(firstName, lastName, username, password);
 
 		//assert that user success message shows on page, maybe wait
-		WebElement successElement = new WebDriverWait(driver, 2).until(
+		WebElement successElement = new WebDriverWait(driver, 10).until(
 				driver -> driver.findElement(By.id("success"))
 		);
 
@@ -82,60 +97,23 @@ class CloudStorageApplicationTests {
 		//assert in home page
 		Assertions.assertEquals("Home", driver.getTitle());
 
-		//
-		HomePage homepage = new HomePage(driver);
-		homepage.logout();
+		HomePage homePage = new HomePage(driver);
+		homePage.logout();
 
-		WebElement loggedoutElement = new WebDriverWait(driver, 2).until(
-				driver -> driver.findElement(By.id("loggedout"))
-		);
+		Thread.sleep(1000);
 
-
-		//assert can logout
+		new WebDriverWait(driver, 5).until(driver -> driver.findElement(By.id("login-page")));
 		Assertions.assertEquals("Login", driver.getTitle());
-		Assertions.assertEquals("You have been logged out ;)", loggedoutElement.getText());
-		System.out.println("All tests passed");
+		Assertions.assertEquals("You have been logged out ;)", driver.findElement(By.id("loggedout")).getText());
 
 	}
 
-	//test user shouldn't be able to sign up if username already in use
+
+	/***** NOTE CREATION, VIEWING, EDITING, DELETION *****/
+
+	//Test note creation
 	@Test
-	public void cantSignUpAgainWithSameName(){
-		driver.get(baseUrl + "/signup");
-
-		String username = "supermario";
-		String password = "mushroom";
-		String firstName = "Mario";
-		String lastName = "Mario";
-		SignupPage signupPage = new SignupPage(driver);
-
-		signupPage.signup(firstName, lastName, username, password);
-
-		//assert that user success message shows on page, maybe wait
-		WebElement webElement = new WebDriverWait(driver, 2).until(
-				ExpectedConditions.elementToBeClickable(By.id("error"))
-		);
-
-		Assertions.assertEquals("Can't sign up with that username. It may already be in use.", webElement.getText());
-	}
-
-	//test basic login - note supermario username needs to be in sys w/pass mushroom
-	@Test
-	public void canLogin() {
-		String username = "supermario";
-		String password = "mushroom";
-
-		driver.get(baseUrl + "/login");
-
-		LoginPage loginPage = new LoginPage(driver);
-		loginPage.login(username, password);
-
-		Assertions.assertEquals("Home", driver.getTitle());
-	}
-
-	//Test note creation/CRUD
-	@Test
-	public void createNote(){
+	public void createNote() throws InterruptedException {
 		this.canLogin();
 		String notetitle = "Hello World";
 		String notedescription = "When you want to show that your code works, show Hello World";
@@ -145,6 +123,42 @@ class CloudStorageApplicationTests {
 		notePage.createNote(notetitle, notedescription);
 	}
 
-	//Test credential creation/CRUD
+	//Test note update
+	@Test
+	public void updateExistingNote() throws InterruptedException {
+		this.canLogin();
+		String notetitle = "Goodbye Everyone";
+		String notedescription = "When you are planning to leave, be sure to tell everyone Goodbye.";
+
+		NotePage notePage = new NotePage(driver);
+		notePage.updateNote(notetitle, notedescription);
+
+	}
+
+	//Test delete note
+	@Test
+	public void deleteNote() throws InterruptedException {
+		this.canLogin();
+		NotePage notePage = new NotePage(driver);
+		notePage.deleteNote();
+	}
+
+	/***** CREDENTIAL CREATION, VIEWING, EDITING, DELETION *****/
+
+	@Test
+	public void createCredential(){
+
+	}
+
+	@Test
+	public void updateCredential(){
+
+	}
+
+	@Test
+	public void deleteCredential(){
+
+	}
+
 
 }

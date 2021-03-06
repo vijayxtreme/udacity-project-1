@@ -18,14 +18,13 @@ public class NoteController {
 
     @PostMapping("/addNote")
     public String postNote(Note note, Model model){
-        int success = -1;
         if(note.getNoteid() != null) {
-            model.addAttribute("success", "Successfully created the note");
-
+            noteService.updateNote(note);
+            model.addAttribute("success", "Successfully updated the note");
         }else {
             noteService.createNote(note);
+            model.addAttribute("success", "Successfully created the note");
         }
-
 
         return "result";
     }
@@ -37,10 +36,10 @@ public class NoteController {
         Note note = noteService.getNoteById(id);
         if(note != null){
             noteService.deleteNote(note);
+            model.addAttribute("success", "Successfully deleted the note");
         }else {
             model.addAttribute("error", "Oops something went wrong");
         }
-        model.addAttribute("success", "Note deleted successfully");
         return "result";
     }
 }

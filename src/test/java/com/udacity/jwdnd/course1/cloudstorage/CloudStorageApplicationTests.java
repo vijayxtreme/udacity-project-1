@@ -134,7 +134,16 @@ class CloudStorageApplicationTests {
 	}
 
 	//Test note creation/CRUD
-	
+	@Test
+	public void createNote(){
+		this.canLogin();
+		String notetitle = "Hello World";
+		String notedescription = "When you want to show that your code works, show Hello World";
+
+		//In home page, go to Note page (tab)?
+		NotePage notePage = new NotePage(driver);
+		notePage.createNote(notetitle, notedescription);
+	}
 
 	//Test credential creation/CRUD
 

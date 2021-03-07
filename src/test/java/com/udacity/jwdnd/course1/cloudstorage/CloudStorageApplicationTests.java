@@ -1,5 +1,6 @@
 package com.udacity.jwdnd.course1.cloudstorage;
 
+import com.udacity.jwdnd.course1.cloudstorage.services.EncryptionService;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.junit.jupiter.api.*;
 import org.openqa.selenium.By;
@@ -36,7 +37,6 @@ class CloudStorageApplicationTests {
 		loginPage.login(username, password);
 
 	}
-
 
 	public String baseUrl;
 
@@ -125,6 +125,9 @@ class CloudStorageApplicationTests {
 		//In home page, go to Note page (tab)?
 		NotePage notePage = new NotePage(driver);
 		notePage.createNote(notetitle, notedescription);
+
+		//Note is visible?
+
 	}
 
 	//Test note update
@@ -138,6 +141,8 @@ class CloudStorageApplicationTests {
 		NotePage notePage = new NotePage(driver);
 		notePage.updateNote(notetitle, notedescription);
 
+		//note is updated
+
 	}
 
 	//Test delete note
@@ -147,6 +152,8 @@ class CloudStorageApplicationTests {
 		this.canLogin();
 		NotePage notePage = new NotePage(driver);
 		notePage.deleteNote();
+
+		//note is deleted
 	}
 
 	/***** CREDENTIAL CREATION, VIEWING, EDITING, DELETION *****/
@@ -158,10 +165,30 @@ class CloudStorageApplicationTests {
 		String url = "https://google.com";
 		String username = "Googler";
 		String password = "adsasd";
+		String key = "";
+		String encryptedPassword = this.encryptionService.encryptValue(password, key);
+
+
+		//could encrypt and decrypt passwords in advance, then check they match in func
 
 		//In home page, go to Note page (tab)?
 		CredentialPage credentialPage = new CredentialPage(driver);
 		credentialPage.createCredential(url, username, password);
+
+		//could put this in the page
+
+		//credential is present, would be first in row
+		String foundEncryptedPassword = driver.findElement(By.className("credential-password")).getText();
+		//credential password is encrypted
+		Assertions.assertTrue(isEncrypted(foundEncryptedPassword, key, password));
+
+		WebElement editCredentialEl = driver.findElement(By.className("edit-credential"));
+		editCredentialEl.click();
+		Thread.sleep(1000);
+
+		
+		//on view, password is decrypted
+		Assertions.assertTrue(isDecrypted());
 	}
 
 	@Test
@@ -172,8 +199,12 @@ class CloudStorageApplicationTests {
 		String username = "Amazonian";
 		String password = "waeasd";
 
+
 		CredentialPage credentialPage = new CredentialPage(driver);
 		credentialPage.updateCredential(url, username, password);
+
+		//verify credential is updated
+		driver.findElement(By.className(""));
 	}
 
 	@Test

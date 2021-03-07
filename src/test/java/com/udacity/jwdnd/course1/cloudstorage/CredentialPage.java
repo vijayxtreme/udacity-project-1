@@ -1,5 +1,6 @@
 package com.udacity.jwdnd.course1.cloudstorage;
 
+import com.udacity.jwdnd.course1.cloudstorage.services.EncryptionService;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -49,11 +50,21 @@ public class CredentialPage {
     private WebDriver driver;
     private static Helper helper;
 
+    private EncryptionService encryptionService;
+
+    private boolean isEncrypted(String stringToEncrypt, String key, String encryptedString){
+        return this.encryptionService.encryptValue(encryptedString, key) == stringToEncrypt;
+    }
+
+    private boolean isDecrypted(String stringToDecrypt, String key, String decryptedString){
+        return this.encryptionService.decryptValue(decryptedString, key) == stringToDecrypt;
+    }
 
 
     public CredentialPage(WebDriver driver){
         PageFactory.initElements(driver, this);
         this.driver = driver;
+        this.encryptionService = new EncryptionService();
     }
 
     private void openCredentialTab() throws InterruptedException {
@@ -81,6 +92,7 @@ public class CredentialPage {
         helper.helperWaitAndClick(this.driver, this.addNewCredential);
         helper.helperWait(this.driver, this.credentialModal);
         this.populateFieldsAndSave(url, username, password);
+        this.openCredentialTab();
     }
 
     public void updateCredential(String url, String username, String password) throws InterruptedException {
@@ -94,4 +106,5 @@ public class CredentialPage {
         this.openCredentialTab();
         helper.helperWaitAndClick(this.driver, this.deleteCredential);
     }
+
 }

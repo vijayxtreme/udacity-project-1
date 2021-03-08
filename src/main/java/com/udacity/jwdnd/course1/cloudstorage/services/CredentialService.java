@@ -65,6 +65,12 @@ public class CredentialService {
 
     //update credential
     public void updateCredential(Credentials credential){
+        //old info
+        Credentials storedCredential = this.getCredentialById(String.valueOf(credential.getCredentialid()));
+        String encodedKey = storedCredential.getKey();
+
+        String encryptedPassword = encryptionService.encryptValue(credential.getPassword(), encodedKey);
+        credential.setPassword(encryptedPassword);
         credentialMapper.updateCredential(credential);
     }
 

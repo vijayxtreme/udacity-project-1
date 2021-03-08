@@ -101,7 +101,7 @@
                                     </div>
                                     <div class="modal-body">
                                         <form id="note-submit" th:action="@{/addNote}" th:object="${note}" method="POST">
-                                            <input type="hidden" name="noteId" id="note-id">
+                                            <input type="hidden" name="noteid" id="note-id" th:value="*{noteid}">
                                             <div class="form-group">
                                                 <label for="note-title" class="col-form-label">Title</label>
                                                 <input type="text" th:field="*{notetitle}" name="noteTitle" class="form-control" id="note-title" maxlength="20" required>
@@ -143,9 +143,9 @@
                                         <button type="button" class="btn btn-success edit-credential" th:data-credentialid="${credential.credentialid}" th:data-url="${credential.url}" th:data-user="${credential.username}" th:data-pass="${credential.password}" th:onClick="showCredentialModal(this.getAttribute('data-credentialid'), this.getAttribute('data-url'), this.getAttribute('data-user'), this.getAttribute('data-pass'))">Edit</button>
                                         <a class="btn btn-danger delete-credential" th:href="@{'/deleteCredential/'+${credential.credentialid}}">Delete</a>
                                     </td>
-                                    <th className="credential-url" scope="row" th:text="${credential.url}">Example Credential URL</th>
-                                    <td className="credential-username" th:text="${credential.username}">Example Credential Username</td>
-                                    <td className="credential-password" th:text="${credential.password}">Example Credential Password</td>
+                                    <th class="credential-url" scope="row" th:text="${credential.url}">Example Credential URL</th>
+                                    <td class="credential-username" th:text="${credential.username}">Example Credential Username</td>
+                                    <td class="credential-password" th:text="${credential.password}">Example Credential Password</td>
                                 </tr>
                                 </tbody>
                             </table>
@@ -162,7 +162,7 @@
                                     </div>
                                     <div class="modal-body">
                                         <form action="#" th:action="@{'/addCredential'}" th:object="${credential}" method="POST">
-                                            <input type="hidden" name="credentialId" id="credential-id" th:field="*{credentialid}">
+                                            <input type="hidden" name="credentialid" id="credentialid" th:value="*{credentialid}">
                                             <input type="hidden" name="userid" id="userid" th:value="${currentUser}">
                                             <div class="form-group">
                                                 <label for="note-title" class="col-form-label">URL</label>
@@ -210,7 +210,7 @@
                 var decrypturl = "/decrypt/"+credentialId;
 
                 fetch(decrypturl).then(res => res.text()).then(res => {
-                    $('#credential-id').val(credentialId ? credentialId : '');
+                    $('#credentialid').val(credentialId ? credentialId : '');
                     $('#credential-url').val(url ? url : '');
                     $('#credential-username').val(username ? username : '');
                     $('#credential-password').val(password ? res : '');

@@ -25,7 +25,7 @@ public interface CredentialMapper {
     int addCredential(Credentials credential);
 
     //Update
-    @Update("UPDATE credentials SET url=#{url}, username=#{username}, password=#{password}, key=#{key} WHERE credentialid = #{credentialid}")
+    @Update("UPDATE credentials SET url=#{url}, username=#{username}, password=#{password} WHERE credentialid = #{credentialid}")
     void updateCredential(Credentials credential);
 
     //Delete

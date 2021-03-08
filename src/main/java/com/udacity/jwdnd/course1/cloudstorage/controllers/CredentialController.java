@@ -21,11 +21,17 @@ public class CredentialController {
 
     @PostMapping("/addCredential")
     public String addCredential(Credentials credential, Model model){
-    //protect against upload twice same cred
-        if(credentialService.createCredential(credential) > -1) {
-            model.addAttribute("success", "Successfully added credential");
+
+        if(credential.getCredentialid() != null){
+            credentialService.updateCredential(credential);
+            model.addAttribute("success", "Successfully updated credential");
         }else {
-            model.addAttribute("error", "Something went wrong.");
+            if(credentialService.createCredential(credential) > -1) {
+                model.addAttribute("success", "Successfully added credential");
+            }else {
+                //create new
+                model.addAttribute("error", "Something went wrong.");
+            }
         }
 
         return "result";
@@ -35,8 +41,6 @@ public class CredentialController {
     public ResponseEntity<String> decrypt(@PathVariable String id){
         try {
             String pass = credentialService.decrypt(id);
-            System.out.println("-------");
-            System.out.println(pass);
             return new ResponseEntity<>(pass, HttpStatus.OK);
         } catch(Exception e){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -44,9 +48,10 @@ public class CredentialController {
     }
 
     @GetMapping("/deleteCredential/{id}")
-    public String deleteCredential(@PathVariable String id){
+    public String deleteCredential(@PathVariable String id, Model model){
 
         credentialService.deleteCredential(id);
+        model.addAttribute("success", "Successfully deleted credential");
         return "result";
     }
 }

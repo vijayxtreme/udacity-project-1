@@ -153,7 +153,8 @@ class CloudStorageApplicationTests {
 		NotePage notePage = new NotePage(driver);
 		notePage.createNote(notetitle, notedescription);
 
-		//Note is visible?
+		//verify created note is visible
+		Assertions.assertTrue(notePage.verifyNoteDisplayed(notetitle, notedescription));
 
 	}
 
@@ -168,8 +169,8 @@ class CloudStorageApplicationTests {
 		NotePage notePage = new NotePage(driver);
 		notePage.updateNote(notetitle, notedescription);
 
-		//note is updated
-
+		//verify updated note is visible
+		Assertions.assertTrue(notePage.verifyNoteDisplayed(notetitle, notedescription));
 	}
 
 	//Test delete note
@@ -178,9 +179,12 @@ class CloudStorageApplicationTests {
 	public void deleteNote() throws InterruptedException {
 		this.canLogin();
 		NotePage notePage = new NotePage(driver);
+		String notetitle = driver.findElement(By.className("note-title")).getText();
+		String noteDescription = driver.findElement(By.className("note-description")).getText();
 		notePage.deleteNote();
 
-		//note is deleted
+		//verify note is deleted - driver can't find
+		Assertions.assertFalse(notePage.verifyNoteDisplayed(notetitle, noteDescription));
 	}
 
 	/***** CREDENTIAL CREATION, VIEWING, EDITING, DELETION *****/
@@ -292,7 +296,12 @@ class CloudStorageApplicationTests {
 	public void deleteCredential() throws InterruptedException {
 		this.canLogin();
 		CredentialPage credentialPage = new CredentialPage(driver);
+		String url = driver.findElement(By.className("credential-url")).getText();
+		String username = driver.findElement(By.className(("credential-username"))).getText();
+
 		credentialPage.deleteCredential();
+
+		Assertions.assertFalse(credentialPage.verifyCredentialDisplayed(url, username));
 	}
 
 

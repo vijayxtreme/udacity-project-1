@@ -41,6 +41,12 @@ public class NotePage {
     @FindBy(css = "#noteModal")
     private WebElement noteModal;
 
+    @FindBy(css = ".note-title")
+    private WebElement displayedNoteTitle;
+
+    @FindBy(css = ".note-description")
+    private WebElement displayedNoteDescription;
+
     private final WebDriver driver;
     private static Helper helper;
 
@@ -93,5 +99,9 @@ public class NotePage {
         helper.helperWaitAndClick(this.driver, this.deleteNote);
 
         this.returnNoteHome();
+    }
+
+    public boolean verifyNoteDisplayed(String title, String description) throws InterruptedException {
+        return helper.elementIsVisible(this.driver, displayedNoteTitle, title) && helper.elementIsVisible(this.driver,displayedNoteDescription,description);
     }
 }

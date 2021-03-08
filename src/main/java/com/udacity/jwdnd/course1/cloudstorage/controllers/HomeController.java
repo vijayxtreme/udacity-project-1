@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.util.Collections;
 import java.util.List;
 
 @Controller
@@ -46,12 +47,15 @@ public class HomeController {
         model.addAttribute("currentUser", currUserId);
 
         List<Note> notes = this.noteService.getAllNotesBelongToUser(currentUser);
+        Collections.reverse(notes);
         model.addAttribute("notes", notes);
 
         List<File> files = this.fileService.getAllFilesBelongToUser(currentUser);
+        Collections.reverse(files);
         model.addAttribute("files", files);
 
         List<Credentials> credentials = this.credentialService.getAllCredentialsBelongToUser(currentUser);
+        Collections.reverse(credentials);
         model.addAttribute("credentials", credentials);
 
         //refactor (since have this above in model)

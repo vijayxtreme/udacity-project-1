@@ -104,4 +104,8 @@ public class NotePage {
     public boolean verifyNoteDisplayed(String title, String description) throws InterruptedException {
         return helper.elementIsVisible(this.driver, displayedNoteTitle, title) && helper.elementIsVisible(this.driver,displayedNoteDescription,description);
     }
+
+    public boolean verifyNoteNotDisplayed(String title, String description) throws InterruptedException {
+        return helper.elementIsNotVisible(this.driver, displayedNoteTitle, title) && helper.elementIsNotVisible(this.driver,displayedNoteDescription,description);
+    }
 }

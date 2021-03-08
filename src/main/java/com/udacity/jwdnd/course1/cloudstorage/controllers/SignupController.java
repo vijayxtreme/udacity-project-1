@@ -47,7 +47,7 @@ public class SignupController {
             return "signup";
         }
 
-        model.addAttribute("success", "Awesome, you signed up!");
+        model.addAttribute("success", "You successfully signed up!");
         return "signup";
 
     }

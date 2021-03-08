@@ -183,8 +183,8 @@ class CloudStorageApplicationTests {
 		String noteDescription = driver.findElement(By.className("note-description")).getText();
 		notePage.deleteNote();
 
-		//verify note is deleted - driver can't find
-		Assertions.assertFalse(notePage.verifyNoteDisplayed(notetitle, noteDescription));
+		//verify note is deleted - test will search for a while
+		Assertions.assertTrue(notePage.verifyNoteNotDisplayed(notetitle, noteDescription));
 	}
 
 	/***** CREDENTIAL CREATION, VIEWING, EDITING, DELETION *****/
@@ -301,7 +301,8 @@ class CloudStorageApplicationTests {
 
 		credentialPage.deleteCredential();
 
-		Assertions.assertFalse(credentialPage.verifyCredentialDisplayed(url, username));
+		//verify credential deleted - test will search for a while
+		Assertions.assertTrue(credentialPage.verifyCredentialNotDisplayed(url, username));
 	}
 
 

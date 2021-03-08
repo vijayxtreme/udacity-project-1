@@ -18,10 +18,11 @@
             <form th:action="@{'/signup'}" th:object="${user}" method="POST">
                 <div th:if="${success}" class="alert alert-dark">
 
-                    <p id="success">You successfully signed up!</p>
+                    <p id="success" th:text="${success}">You successfully signed up! </p>
+                    <p>Now <a href="/login">Login</a></p>
                 </div>
                 <div th:if="${error}" class="alert alert-danger">
-                    <span id="error">Can't sign up with that username. It may already be in use.</span>
+                    <span id="error" th:text="${error}">Can't sign up with that username. It may already be in use.</span>
                 </div>
                 <div class="form-row">
                     <div class="form-group col-md-6">

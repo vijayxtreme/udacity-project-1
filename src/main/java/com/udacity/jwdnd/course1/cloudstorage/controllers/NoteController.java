@@ -18,28 +18,47 @@ public class NoteController {
 
     @PostMapping("/addNote")
     public String postNote(Note note, Model model){
-        if(note.getNoteid() != null) {
-            noteService.updateNote(note);
-            model.addAttribute("success", "Successfully updated the note");
-        }else {
-            noteService.createNote(note);
-            model.addAttribute("success", "Successfully created the note");
+
+        if(note.getUserid() == null || note.getNotetitle() == "" || note.getNotedescription() == ""){
+            model.addAttribute("error", "Note fields were not filled out correctly.");
+            return "result";
         }
 
-        return "result";
+        try {
+            if(note.getNoteid() != null) {
+                noteService.updateNote(note);
+            }else {
+                noteService.createNote(note);
+            }
+            model.addAttribute("success", "Successfully updated the note");
+        }catch(Exception e){
+            model.addAttribute("error", "Sorry could not save the note. There was an error.");
+        }finally {
+            return "result";
+        }
+
     }
 
     // Delete -- should check user logged in
     // otherwise anyone can just delete via the url
     @GetMapping("/deleteNote/{id}")
     public String deleteNote(@PathVariable String id, Model model){
-        Note note = noteService.getNoteById(id);
-        if(note != null){
-            noteService.deleteNote(note);
-            model.addAttribute("success", "Successfully deleted the note");
-        }else {
-            model.addAttribute("error", "Oops something went wrong");
+        if(id == ""){
+            model.addAttribute("error", "There was an issue with your request, please try again later.");
+            return "result";
         }
-        return "result";
+        try {
+            Note note = noteService.getNoteById(id);
+            if (note != null) {
+                noteService.deleteNote(note);
+                model.addAttribute("success", "Successfully deleted the note");
+            } else {
+                model.addAttribute("error", "Oops something went wrong");
+            }
+        }catch(Exception e){
+            model.addAttribute("error", "There was an issue with your request, please try again later.");
+        }finally {
+            return "result";
+        }
     }
 }

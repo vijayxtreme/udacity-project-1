@@ -50,6 +50,12 @@ public class CredentialPage {
     @FindBy(css = "#credentialModal")
     private WebElement credentialModal;
 
+    @FindBy(css = ".credential-url")
+    private WebElement displayedCredentialUrl;
+
+    @FindBy(css = ".credential-username")
+    private WebElement displayedCredentialUserName;
+
     private WebDriver driver;
     private static Helper helper;
 
@@ -101,8 +107,13 @@ public class CredentialPage {
     }
 
     public boolean verifyCredentialDisplayed(String urlString, String usernameString) throws InterruptedException {
-        return helper.elementIsVisible(this.driver, driver.findElement(By.className("credential-url")), urlString) &&
-        helper.elementIsVisible(this.driver, driver.findElement(By.className("credential-username")), usernameString);
+        return helper.elementIsVisible(this.driver, displayedCredentialUrl, urlString) &&
+        helper.elementIsVisible(this.driver, displayedCredentialUserName, usernameString);
+    }
+
+    public boolean verifyCredentialNotDisplayed(String urlString, String usernameString) throws InterruptedException {
+        return helper.elementIsNotVisible(this.driver, displayedCredentialUrl, urlString) &&
+                helper.elementIsNotVisible(this.driver, displayedCredentialUserName, usernameString);
     }
 
     public String getCredentialEncryptedPassword(){

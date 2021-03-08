@@ -22,19 +22,26 @@ public class CredentialController {
     @PostMapping("/addCredential")
     public String addCredential(Credentials credential, Model model){
 
-        if(credential.getCredentialid() != null){
-            credentialService.updateCredential(credential);
-            model.addAttribute("success", "Successfully updated credential");
-        }else {
-            if(credentialService.createCredential(credential) > -1) {
-                model.addAttribute("success", "Successfully added credential");
-            }else {
-                //create new
-                model.addAttribute("error", "Something went wrong.");
-            }
+        //prevent against non filled out forms
+        if(credential.getUserid() == null || credential.getUsername() == "" || credential.getPassword() == "" || credential.getUrl() == "" ){
+            model.addAttribute("error", "Credential fields not completely filled out, please try again.");
+            return "result";
         }
 
-        return "result";
+        try {
+            if (credential.getCredentialid() != null) {
+                credentialService.updateCredential(credential);
+                model.addAttribute("success", "Successfully updated credential");
+            } else {
+                credentialService.createCredential(credential);
+                model.addAttribute("success", "Successfully added credential");
+            }
+        }catch(Exception exception){
+            model.addAttribute("error", "Something went wrong with saving your credential, please try later.");
+        }finally {
+            return "result";
+        }
+
     }
 
     @GetMapping("/decrypt/{id}")
@@ -49,9 +56,19 @@ public class CredentialController {
 
     @GetMapping("/deleteCredential/{id}")
     public String deleteCredential(@PathVariable String id, Model model){
+        if(id == ""){
+            model.addAttribute("error", "There was an issue with your request, please try later");
+            return "result";
+        }
+        try {
+            credentialService.deleteCredential(id);
+            model.addAttribute("success", "Successfully deleted credential");
 
-        credentialService.deleteCredential(id);
-        model.addAttribute("success", "Successfully deleted credential");
-        return "result";
+        }catch(Exception e){
+            model.addAttribute("error", "There was an issue with your request, please try later");
+
+        }finally {
+            return "result";
+        }
     }
 }

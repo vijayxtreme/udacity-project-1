@@ -40,6 +40,8 @@ public class FileService {
         return this.fileMapper.getFileById(fileid);
     }
 
+    public File getFileByNameByUser(String filename, String userid){ return this.fileMapper.getFileByNameByUser(filename, userid); }
+
     //createFile
     public int createFile(File file){
         return this.fileMapper.createFile(file);

@@ -7,6 +7,8 @@ import org.springframework.context.annotation.Bean;
 @SpringBootApplication
 public class CloudStorageApplication {
 
+	private int maxUploadSizeInMb = 10 * 1024 * 1024; // 10 MB
+
 	public static void main(String[] args) {
 		SpringApplication.run(CloudStorageApplication.class, args);
 	}
@@ -15,5 +17,7 @@ public class CloudStorageApplication {
 	public void message(){
 		System.out.println("Hello");
 	}
+
+
 
 }

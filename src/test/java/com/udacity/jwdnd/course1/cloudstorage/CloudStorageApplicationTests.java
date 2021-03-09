@@ -118,10 +118,6 @@ class CloudStorageApplicationTests {
 				driver -> driver.findElement(By.id("success"))
 		);
 
-		Assertions.assertEquals("You successfully signed up!", successElement.getText());
-
-		driver.get(baseUrl + "/login");
-
 		LoginPage loginPage = new LoginPage(driver);
 		loginPage.login(username, password);
 

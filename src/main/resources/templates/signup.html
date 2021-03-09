@@ -16,11 +16,6 @@
 
             <h1 class="display-5">Sign Up</h1>
             <form th:action="@{'/signup'}" th:object="${user}" method="POST">
-                <div th:if="${success}" class="alert alert-dark">
-
-                    <p id="success" th:text="${success}">You successfully signed up! </p>
-                    <p>Now <a href="/login">Login</a></p>
-                </div>
                 <div th:if="${error}" class="alert alert-danger">
                     <span id="error" th:text="${error}">Can't sign up with that username. It may already be in use.</span>
                 </div>

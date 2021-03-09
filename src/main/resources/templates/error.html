@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Title</title>
+    <link rel="stylesheet" type="text/css" media="all" th:href="@{/css/bootstrap.min.css}">
+</head>
+<body class="p-3 mb-2 bg-light text-black">
+<div class="container justify-content-center w-50 p-3" style="margin-top: 5em;">
+    <h1>Oops something weird happened.</h1>
+    <div th:if="${customError}" class="alert alert-danger fill-parent">
+        <h1 class="display-5">Error</h1>
+        <p th:text="${customError}"></p>
+    </div>
+    <p>Click <a id="error-resume" href="/">here</a> to return home.</p>
+</div>
+</body>
+</html>
